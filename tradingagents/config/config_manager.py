@@ -80,7 +80,8 @@ class ConfigManager:
             "dashscope": "DASHSCOPE_API_KEY",
             "openai": "OPENAI_API_KEY",
             "google": "GOOGLE_API_KEY",
-            "anthropic": "ANTHROPIC_API_KEY"
+            "anthropic": "ANTHROPIC_API_KEY",
+            "deepseek": "DEEPSEEK_API_KEY"
         }
 
         env_key = env_key_map.get(provider.lower())
@@ -130,6 +131,24 @@ class ConfigManager:
                     max_tokens=4000,
                     temperature=0.7,
                     enabled=False
+                ),
+                ModelConfig(
+                    provider="deepseek",
+                    model_name="deepseek-chat",
+                    api_key="",
+                    base_url="https://api.deepseek.com",
+                    max_tokens=4000,
+                    temperature=0.7,
+                    enabled=False
+                ),
+                ModelConfig(
+                    provider="deepseek",
+                    model_name="deepseek-coder",
+                    api_key="",
+                    base_url="https://api.deepseek.com",
+                    max_tokens=4000,
+                    temperature=0.7,
+                    enabled=False
                 )
             ]
             self.save_models(default_models)
@@ -150,6 +169,10 @@ class ConfigManager:
                 # Google定价 (美元)
                 PricingConfig("google", "gemini-pro", 0.00025, 0.0005, "USD"),
                 PricingConfig("google", "gemini-pro-vision", 0.00025, 0.0005, "USD"),
+                
+                # DeepSeek定价 (人民币)
+                PricingConfig("deepseek", "deepseek-chat", 0.001, 0.002, "CNY"),
+                PricingConfig("deepseek", "deepseek-coder", 0.001, 0.002, "CNY"),
             ]
             self.save_pricing(default_pricing)
         

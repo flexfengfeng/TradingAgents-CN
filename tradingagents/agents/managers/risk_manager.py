@@ -45,8 +45,11 @@ def create_risk_manager(llm, memory):
 
         response = llm.invoke(prompt)
 
+        # 兼容不同LLM的响应格式
+        content = response.content if hasattr(response, 'content') else str(response)
+
         new_risk_debate_state = {
-            "judge_decision": response.content,
+            "judge_decision": content,
             "history": risk_debate_state["history"],
             "risky_history": risk_debate_state["risky_history"],
             "safe_history": risk_debate_state["safe_history"],
@@ -60,7 +63,7 @@ def create_risk_manager(llm, memory):
 
         return {
             "risk_debate_state": new_risk_debate_state,
-            "final_trade_decision": response.content,
+            "final_trade_decision": content,
         }
 
     return risk_manager_node

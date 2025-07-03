@@ -13,6 +13,7 @@ def check_api_keys():
     openai_key = os.getenv("OPENAI_API_KEY")
     anthropic_key = os.getenv("ANTHROPIC_API_KEY")
     google_key = os.getenv("GOOGLE_API_KEY")
+    deepseek_key = os.getenv("DEEPSEEK_API_KEY")
     
     # 构建详细状态
     details = {
@@ -45,6 +46,12 @@ def check_api_keys():
             "display": f"{google_key[:12]}..." if google_key else "未配置",
             "required": False,
             "description": "Google AI API密钥"
+        },
+        "DEEPSEEK_API_KEY": {
+            "configured": bool(deepseek_key),
+            "display": f"{deepseek_key[:12]}..." if deepseek_key else "未配置",
+            "required": False,
+            "description": "DeepSeek API密钥"
         }
     }
     
@@ -95,6 +102,9 @@ def validate_api_key_format(key_type, api_key):
     elif key_type == "OPENAI_API_KEY":
         if not api_key.startswith("sk-"):
             return False, "OpenAI API密钥应以'sk-'开头"
+    elif key_type == "DEEPSEEK_API_KEY":
+        if not api_key.startswith("sk-"):
+            return False, "DeepSeek API密钥应以'sk-'开头"
     
     return True, "API密钥格式正确"
 

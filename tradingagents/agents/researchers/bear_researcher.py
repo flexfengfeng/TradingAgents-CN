@@ -63,7 +63,14 @@ def create_bear_researcher(llm, memory):
 
         response = llm.invoke(prompt)
 
-        argument = f"Bear Analyst: {response.content}"
+        # 兼容不同LLM响应格式
+        if hasattr(response, 'content'):
+            content = response.content
+        else:
+            # 对于直接返回字符串的LLM（如DeepSeek）
+            content = str(response)
+        
+        argument = f"Bear Analyst: {content}"
 
         new_investment_debate_state = {
             "history": history + "\n" + argument,

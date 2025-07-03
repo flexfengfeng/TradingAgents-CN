@@ -30,6 +30,17 @@ results/
 logs/
 temp/
 
+# 生成的报告和数据文件
+data/reports/
+*.md
+!README*.md
+!docs/**/*.md
+!CHANGELOG.md
+!CONTRIBUTING.md
+!LICENSE.md
+!PROJECT_INFO.md
+!**/README.md
+
 # IDE和编辑器文件
 .vscode/
 .idea/

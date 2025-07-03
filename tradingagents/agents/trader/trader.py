@@ -90,13 +90,23 @@ def create_trader(llm, memory):
         result = llm.invoke(messages)
 
         print(f"💰 [DEBUG] LLM调用完成")
-        print(f"💰 [DEBUG] 交易员回复长度: {len(result.content)}")
-        print(f"💰 [DEBUG] 交易员回复前500字符: {result.content[:500]}...")
+        
+        # 兼容不同LLM的响应格式
+        if hasattr(result, 'content'):
+            content = result.content
+            print(f"💰 [DEBUG] 交易员回复长度: {len(content)}")
+            print(f"💰 [DEBUG] 交易员回复前500字符: {content[:500]}...")
+        else:
+            # 如果result是字符串类型（如DeepSeek）
+            content = str(result)
+            print(f"💰 [DEBUG] 交易员回复长度: {len(content)}")
+            print(f"💰 [DEBUG] 交易员回复前500字符: {content[:500]}...")
+        
         print(f"💰 [DEBUG] ===== 交易员节点结束 =====")
 
         return {
             "messages": [result],
-            "trader_investment_plan": result.content,
+            "trader_investment_plan": content,
             "sender": name,
         }
 

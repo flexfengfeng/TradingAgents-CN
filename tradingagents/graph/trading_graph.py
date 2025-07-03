@@ -10,6 +10,7 @@ from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
 from langchain_google_genai import ChatGoogleGenerativeAI
 from tradingagents.llm_adapters import ChatDashScope
+from tradingagents.llm_adapters.deepseek_adapter import DeepSeekLLM
 
 from langgraph.prebuilt import ToolNode
 
@@ -102,6 +103,22 @@ class TradingAgentsGraph:
                 quick_model = "qwen-turbo"  # 使用通义千问默认模型
             self.react_llm.model_name = quick_model
             print(f"📊 [DEBUG] ReAct LLM模型设置为: {quick_model}")
+        elif (self.config["llm_provider"].lower() == "deepseek" or
+              "deepseek" in self.config["llm_provider"].lower()):
+            self.deep_thinking_llm = DeepSeekLLM(
+                model_name=self.config["deep_think_llm"],
+                temperature=0.1,
+                max_tokens=2000
+            )
+            self.quick_thinking_llm = DeepSeekLLM(
+                model_name=self.config["quick_think_llm"],
+                temperature=0.1,
+                max_tokens=2000
+            )
+            # DeepSeek暂不支持工具调用，使用基础LLM
+            self.react_llm = self.quick_thinking_llm
+            print(f"📊 [DEBUG] DeepSeek LLM模型设置为: {self.config['quick_think_llm']}")
+            print(f"⚠️  [WARNING] DeepSeek暂不支持工具调用，部分功能可能受限")
         else:
             raise ValueError(f"Unsupported LLM provider: {self.config['llm_provider']}")
         

@@ -197,6 +197,68 @@
 
 ## [未发布] | Unreleased
 
+### 🤖 DeepSeek AI集成 | DeepSeek AI Integration
+
+#### ✨ 新增功能 | Added Features
+
+**🧠 DeepSeek LLM适配器**
+- 完整的DeepSeek API集成
+- 支持deepseek-chat和deepseek-coder模型
+- LangChain兼容的接口实现
+- 智能token计数和成本追踪
+
+**⚙️ 配置管理增强**
+- 配置管理器新增DeepSeek支持
+- 自动API密钥检测和验证
+- 统一的模型配置和定价管理
+- 环境变量DEEPSEEK_API_KEY支持
+
+**🎯 TradingGraph集成**
+- TradingAgentsGraph完整支持DeepSeek
+- 深度思考和快速思考模型配置
+- 智能LLM提供商检测和切换
+- 完善的错误处理和日志记录
+
+**🧪 测试和示例**
+- 完整的集成测试套件
+- DeepSeek配置示例程序
+- API连接验证工具
+- 详细的使用文档
+
+#### 🔧 技术特性 | Technical Features
+
+**💰 成本控制**
+- 实时使用量追踪
+- 成本预估和警告
+- 人民币定价支持
+- 详细的使用统计
+
+**🛡️ 错误处理**
+- 完善的异常处理机制
+- 自动重试和故障恢复
+- 详细的错误日志
+- API状态监控
+
+**📊 性能优化**
+- 智能token管理
+- 请求超时控制
+- 批量处理支持
+- 缓存机制准备
+
+#### ⚠️ 限制说明 | Limitations
+
+- DeepSeek暂不支持工具调用功能
+- 部分ReAct Agent功能受限
+- 流式输出暂未实现
+- 主要适用于文本生成和分析任务
+
+#### 📚 文档更新 | Documentation
+
+- **DeepSeek集成指南**: 完整的配置和使用教程
+- **API参考文档**: 详细的接口说明
+- **最佳实践指南**: 性能优化和成本控制
+- **故障排除手册**: 常见问题和解决方案
+
 ### 计划中 | Planned
 
 - 中国股票市场支持（A股、港股、新三板）

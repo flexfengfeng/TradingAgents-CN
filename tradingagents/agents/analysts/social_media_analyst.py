@@ -88,8 +88,12 @@ def create_social_media_analyst(llm, toolkit):
 
         report = ""
 
-        if len(result.tool_calls) == 0:
-            report = result.content
+        # 兼容不同LLM的响应格式
+        if hasattr(result, 'tool_calls') and len(result.tool_calls) == 0:
+            report = result.content if hasattr(result, 'content') else str(result)
+        elif not hasattr(result, 'tool_calls'):
+            # 对于返回字符串的LLM（如DeepSeek），直接使用结果
+            report = str(result)
 
         return {
             "messages": [result],

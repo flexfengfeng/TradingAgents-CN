@@ -56,18 +56,25 @@ Debate History:
 {history}"""
         response = llm.invoke(prompt)
 
+        # 兼容不同LLM响应格式
+        if hasattr(response, 'content'):
+            content = response.content
+        else:
+            # 对于直接返回字符串的LLM（如DeepSeek）
+            content = str(response)
+
         new_investment_debate_state = {
-            "judge_decision": response.content,
+            "judge_decision": content,
             "history": investment_debate_state.get("history", ""),
             "bear_history": investment_debate_state.get("bear_history", ""),
             "bull_history": investment_debate_state.get("bull_history", ""),
-            "current_response": response.content,
+            "current_response": content,
             "count": investment_debate_state["count"],
         }
 
         return {
             "investment_debate_state": new_investment_debate_state,
-            "investment_plan": response.content,
+            "investment_plan": content,
         }
 
     return research_manager_node

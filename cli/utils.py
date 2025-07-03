@@ -157,6 +157,10 @@ def select_shallow_thinking_agent(provider) -> str:
             ("通义千问 Turbo - 快速响应，适合日常对话", "qwen-turbo"),
             ("通义千问 Plus - 平衡性能和成本", "qwen-plus"),
             ("通义千问 Max - 最强性能", "qwen-max"),
+        ],
+        "deepseek": [
+            ("DeepSeek Chat - 高性能对话模型", "deepseek-chat"),
+            ("DeepSeek Reasoner - 推理专用模型", "deepseek-reasoner"),
         ]
     }
 
@@ -234,6 +238,10 @@ def select_deep_thinking_agent(provider) -> str:
             ("通义千问 Plus - 平衡性能和成本", "qwen-plus"),
             ("通义千问 Max - 最强性能", "qwen-max"),
             ("通义千问 Max 长文本版 - 支持超长上下文", "qwen-max-longcontext"),
+        ],
+        "deepseek": [
+            ("DeepSeek Chat - 高性能对话模型", "deepseek-chat"),
+            ("DeepSeek Reasoner - 推理专用模型", "deepseek-reasoner"),
         ]
     }
     
@@ -275,6 +283,7 @@ def select_llm_provider() -> tuple[str, str]:
     BASE_URLS = [
         ("阿里百炼 (DashScope)", "https://dashscope.aliyuncs.com/api/v1"),
         ("OpenAI", "https://api.openai.com/v1"),
+        ("DeepSeek", "https://api.deepseek.com/v1"),
         ("Anthropic", "https://api.anthropic.com/"),
         ("Google", "https://generativelanguage.googleapis.com/v1"),
         ("Openrouter", "https://openrouter.ai/api/v1"),

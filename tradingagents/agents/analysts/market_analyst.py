@@ -282,13 +282,17 @@ MACD相关指标：
         result = chain.invoke(state["messages"])
 
         # 处理市场分析报告
-        if len(result.tool_calls) == 0:
+        # 兼容不同LLM的响应格式
+        if hasattr(result, 'tool_calls') and len(result.tool_calls) == 0:
             # 没有工具调用，直接使用LLM的回复
-            report = result.content
-        else:
+            report = result.content if hasattr(result, 'content') else str(result)
+        elif hasattr(result, 'tool_calls') and result.tool_calls:
             # 有工具调用，需要等待工具执行完成后获取最终报告
             report = f"市场分析师正在调用工具进行分析: {[call.get('name', 'unknown') for call in result.tool_calls]}"
             print(f"📊 [市场分析师] 工具调用: {[call.get('name', 'unknown') for call in result.tool_calls]}")
+        else:
+            # 对于返回字符串的LLM（如DeepSeek），直接使用结果
+            report = str(result)
 
         return {
             "messages": [result],

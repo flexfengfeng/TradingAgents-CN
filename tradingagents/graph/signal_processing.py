@@ -64,7 +64,12 @@ class SignalProcessor:
         ]
 
         try:
-            response = self.quick_thinking_llm.invoke(messages).content
+            result = self.quick_thinking_llm.invoke(messages)
+            # 兼容不同LLM的响应格式
+            if hasattr(result, 'content'):
+                response = result.content
+            else:
+                response = str(result)
             print(f"🔍 [SignalProcessor] LLM响应: {response[:200]}...")
 
             # 尝试解析JSON响应

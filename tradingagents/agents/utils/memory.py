@@ -19,6 +19,18 @@ class FinancialSituationMemory:
             dashscope_key = os.getenv('DASHSCOPE_API_KEY')
             if dashscope_key:
                 dashscope.api_key = dashscope_key
+        elif self.llm_provider == "deepseek":
+            # DeepSeek使用阿里百炼嵌入（如果可用），否则使用OpenAI兼容的嵌入
+            dashscope_key = os.getenv('DASHSCOPE_API_KEY')
+            if dashscope_key:
+                self.embedding = "text-embedding-v3"
+                self.client = None
+                dashscope.api_key = dashscope_key
+                print("💡 DeepSeek使用阿里百炼嵌入服务")
+            else:
+                self.embedding = "text-embedding-3-small"
+                self.client = OpenAI(base_url=config["backend_url"])
+                print("⚠️ DeepSeek回退到OpenAI嵌入服务")
         elif self.llm_provider == "google":
             # Google AI使用阿里百炼嵌入（如果可用），否则使用OpenAI
             dashscope_key = os.getenv('DASHSCOPE_API_KEY')
@@ -52,6 +64,7 @@ class FinancialSituationMemory:
 
         if (self.llm_provider == "dashscope" or
             self.llm_provider == "alibaba" or
+            (self.llm_provider == "deepseek" and self.client is None) or
             (self.llm_provider == "google" and self.client is None)):
             # 使用阿里百炼的嵌入模型
             try:

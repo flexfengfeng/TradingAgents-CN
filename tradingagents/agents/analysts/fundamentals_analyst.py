@@ -388,7 +388,8 @@ def create_fundamentals_analyst(llm, toolkit):
         print(f"📊 [DEBUG] 内容长度: {len(result.content) if hasattr(result, 'content') else 0}")
 
         # 处理基本面分析报告
-        if len(result.tool_calls) == 0:
+        # 兼容不同LLM的响应格式
+        if hasattr(result, 'tool_calls') and len(result.tool_calls) == 0:
             # 对于中国股票，如果LLM没有调用工具，我们手动调用工具
             if is_china_stock(ticker):
                 print(f"📊 [DEBUG] 中国股票但LLM未调用工具，手动调用工具...")
@@ -432,12 +433,16 @@ def create_fundamentals_analyst(llm, toolkit):
                 # 非中国股票，直接使用LLM的回复
                 report = result.content
                 print(f"📊 [基本面分析师] 生成最终报告，长度: {len(report)}")
-        else:
+        elif hasattr(result, 'tool_calls') and result.tool_calls:
             # 有工具调用，先返回工具调用信息，等待工具执行
             report = state.get("fundamentals_report", "")  # 保持现有报告
             print(f"📊 [基本面分析师] 工具调用: {[call.get('name', 'unknown') for call in result.tool_calls]}")
             for i, call in enumerate(result.tool_calls):
                 print(f"📊 [DEBUG] 工具调用 {i+1}: {call}")
+        else:
+            # 对于返回字符串的LLM（如DeepSeek），直接使用结果
+            report = str(result)
+            print(f"📊 [基本面分析师] 直接使用LLM结果，长度: {len(report)}")
 
         print(f"📊 [DEBUG] 返回状态: fundamentals_report长度={len(report)}")
         print(f"📊 [DEBUG] ===== 基本面分析师节点结束 =====")

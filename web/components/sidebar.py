@@ -16,6 +16,7 @@ def render_sidebar():
         
         dashscope_key = os.getenv("DASHSCOPE_API_KEY")
         finnhub_key = os.getenv("FINNHUB_API_KEY")
+        deepseek_key = os.getenv("DEEPSEEK_API_KEY")
         
         if dashscope_key:
             st.success(f"✅ 阿里百炼: {dashscope_key[:12]}...")
@@ -27,6 +28,11 @@ def render_sidebar():
         else:
             st.error("❌ 金融数据: 未配置")
         
+        if deepseek_key:
+            st.success(f"✅ DeepSeek: {deepseek_key[:12]}...")
+        else:
+            st.info("ℹ️ DeepSeek: 未配置 (可选)")
+        
         st.markdown("---")
         
         # AI模型配置
@@ -35,11 +41,12 @@ def render_sidebar():
         # LLM提供商选择
         llm_provider = st.selectbox(
             "选择LLM提供商",
-            options=["dashscope", "google"],
+            options=["dashscope", "google", "deepseek"],
             index=0,
             format_func=lambda x: {
                 "dashscope": "阿里百炼 - 国产模型",
-                "google": "Google AI - Gemini模型"
+                "google": "Google AI - Gemini模型",
+                "deepseek": "DeepSeek - 推理专用模型"
             }[x],
             help="选择AI模型提供商"
         )
@@ -57,7 +64,7 @@ def render_sidebar():
                 }[x],
                 help="选择用于分析的阿里百炼模型"
             )
-        else:  # google
+        elif llm_provider == "google":
             llm_model = st.selectbox(
                 "选择Google模型",
                 options=["gemini-2.0-flash", "gemini-1.5-pro", "gemini-1.5-flash"],
@@ -68,6 +75,18 @@ def render_sidebar():
                     "gemini-1.5-flash": "Gemini 1.5 Flash - 快速响应"
                 }[x],
                 help="选择用于分析的Google Gemini模型"
+            )
+        else:  # deepseek
+            llm_model = st.selectbox(
+                "选择DeepSeek模型",
+                options=["deepseek-chat", "deepseek-coder", "deepseek-reasoner"],
+                index=0,
+                format_func=lambda x: {
+                    "deepseek-chat": "DeepSeek Chat - 通用对话模型",
+                    "deepseek-coder": "DeepSeek Coder - 代码专用模型",
+                    "deepseek-reasoner": "DeepSeek Reasoner - 推理专用模型"
+                }[x],
+                help="选择用于分析的DeepSeek模型"
             )
         
         # 高级设置

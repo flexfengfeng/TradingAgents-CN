@@ -34,7 +34,9 @@ def create_risky_debator(llm):
 
         response = llm.invoke(prompt)
 
-        argument = f"Risky Analyst: {response.content}"
+        # 兼容不同LLM的响应格式
+        content = response.content if hasattr(response, 'content') else str(response)
+        argument = f"Risky Analyst: {content}"
 
         new_risk_debate_state = {
             "history": history + "\n" + argument,
