@@ -12,4 +12,4 @@ pandas>=2.0.0
 numpy>=1.24.0
 
 # 序列化
-pickle5>=0.0.11  # Python 3.8+兼容
+# pickle5>=0.0.11  # Python 3.8+兼容 (Python 3.13不需要)
